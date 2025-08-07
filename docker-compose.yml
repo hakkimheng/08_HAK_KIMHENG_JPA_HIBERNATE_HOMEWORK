@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    container_name: product-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://product-db:5432/product
+      SPRING_DATASOURCE_USERNAME: kimheng
+      SPRING_DATASOURCE_PASSWORD: 1234
+
+  db:
+    image: postgres:16
+    ports:
+      - "5433:5432"
+    container_name: product-db
+    environment:
+      POSTGRES_DB: product
+      POSTGRES_USER: kimheng
+      POSTGRES_PASSWORD: 1234
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:

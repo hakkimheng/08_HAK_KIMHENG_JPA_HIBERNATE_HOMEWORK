@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: 08_HAK_KIMHENG_JPA_HIBERNATE_HOMEWORK
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true

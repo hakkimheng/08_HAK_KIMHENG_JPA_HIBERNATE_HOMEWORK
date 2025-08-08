@@ -3,6 +3,7 @@ package com.jpa.homeworkjpa.controller;
 import com.jpa.homeworkjpa.model.dto.request.ProductRequest;
 import com.jpa.homeworkjpa.model.dto.response.ApiResponse;
 import com.jpa.homeworkjpa.model.dto.response.BaseResponse;
+import com.jpa.homeworkjpa.model.dto.response.ListProductResponse;
 import com.jpa.homeworkjpa.model.entity.Product;
 import com.jpa.homeworkjpa.service.ProductService;
 import jakarta.validation.Valid;
@@ -28,31 +29,31 @@ public class ProductController extends BaseResponse {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Product>>> findAll(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+    public ResponseEntity<ApiResponse<ListProductResponse>> findAll(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
         return responseEntity(productService.findAll(page , size), "Fetch all product" , HttpStatus.OK);
     }
-    @GetMapping("/low-stock/{gty}")
-    public ResponseEntity<ApiResponse<List<Product>>> findLowStock(@PathVariable Integer gty) {
-        return responseEntity(productService.findProductLowStock(gty), "Fetch all product Low stock" , HttpStatus.OK);
+    @GetMapping("/low-stock/{quantity}")
+    public ResponseEntity<ApiResponse<List<Product>>> findLowStock(@PathVariable Integer quantity) {
+        return responseEntity(productService.findProductLowStock(quantity), "Products with quantity less than 1 fetched successfully" , HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Product>> findById(@PathVariable Long id) {
-        return responseEntity(productService.findById(id), "Fetch product by id" , HttpStatus.OK);
+        return responseEntity(productService.findById(id), "Product fetched successfully" , HttpStatus.OK);
     }
 
     @GetMapping("/by-name/{name}")
     public ResponseEntity<ApiResponse<List<Product>>> findByName(@PathVariable String name) {
-        return responseEntity(productService.findByName(name), "Fetch all product by name" , HttpStatus.OK);
+        return responseEntity(productService.findByName(name), "Products name " + name + " fetched successfully" , HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Product>> update(@RequestBody @Valid ProductRequest product , @PathVariable Long id) {
-        return responseEntity(productService.update(product , id) , "Product updated" , HttpStatus.OK);
+        return responseEntity(productService.update(product , id) , "Product updated successfully" , HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Product>> delete(@PathVariable Long id) {
         productService.delete(id);
-        return responseEntity(null , "Product has been deleted successful" , HttpStatus.OK);
+        return responseEntity(null , "Product deleted successful" , HttpStatus.OK);
     }
 }

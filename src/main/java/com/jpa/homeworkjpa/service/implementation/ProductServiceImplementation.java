@@ -1,7 +1,9 @@
 package com.jpa.homeworkjpa.service.implementation;
 
 import com.jpa.homeworkjpa.exception.BadRequestException;
+import com.jpa.homeworkjpa.exception.NotFoundException;
 import com.jpa.homeworkjpa.model.dto.request.ProductRequest;
+import com.jpa.homeworkjpa.model.dto.response.ListProductResponse;
 import com.jpa.homeworkjpa.model.entity.Product;
 import com.jpa.homeworkjpa.repository.ProductRepository;
 import com.jpa.homeworkjpa.service.ProductService;
@@ -17,8 +19,8 @@ public class ProductServiceImplementation  implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public List<Product> findAll(Integer page , Integer size) {
-        if(productRepository.findAll(page,size).isEmpty()) {
+    public ListProductResponse findAll(Integer page , Integer size) {
+        if(productRepository.findAll(page,size)==null) {
             throw new BadRequestException("Product not found");
         }
         return productRepository.findAll(page,size);
@@ -42,7 +44,7 @@ public class ProductServiceImplementation  implements ProductService {
     public Product findById(Long id) {
         Product product = productRepository.findById(id);
         if(product == null) {
-            throw new BadRequestException("Product not found");
+            throw new BadRequestException("Product with id " + id + " not found");
         }
         return product;
     }
@@ -51,7 +53,7 @@ public class ProductServiceImplementation  implements ProductService {
     public Product update(ProductRequest productRequest, Long id) {
         Product product = productRepository.findById(id);
         if(product == null) {
-            throw new BadRequestException("Product not found");
+            throw new BadRequestException("Product with id " + id + " not found");
         }
         product.setName(productRequest.getName());
         product.setPrice(productRequest.getPrice());
@@ -64,7 +66,7 @@ public class ProductServiceImplementation  implements ProductService {
     public void delete(Long id) {
         Product product = productRepository.findById(id);
         if(product == null) {
-            throw new BadRequestException("Product not found");
+            throw new BadRequestException("Product with id " + id + " not found");
         }
         productRepository.deleteById(id);
     }
@@ -73,7 +75,7 @@ public class ProductServiceImplementation  implements ProductService {
     public List<Product> findProductLowStock(Integer quantity) {
         List<Product> products = productRepository.findProductLowStock(quantity);
         if(products == null) {
-            throw new BadRequestException("Product not found");
+            throw new NotFoundException("Product not found");
         }
        return productRepository.findProductLowStock(quantity);
     }
@@ -81,9 +83,10 @@ public class ProductServiceImplementation  implements ProductService {
     @Override
     public List<Product> findByName(String name) {
         List<Product> products = productRepository.findByName(name);
-        if(products == null) {
-            throw new BadRequestException("Product not found");
-        }
-        return productRepository.findByName(name);
+
+//        if(products == null || products.isEmpty()) {
+//            throw new BadRequestException("Product with name " + name + " not found");
+//        }
+        return products;
     }
 }

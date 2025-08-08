@@ -11,9 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
-    private Boolean success;
-    private HttpStatus status;
     private String message;
     private T payload;
-    private final LocalDateTime timestamp = LocalDateTime.now();
+    private HttpStatus status;
+    private final LocalDateTime instant = LocalDateTime.now();
 }

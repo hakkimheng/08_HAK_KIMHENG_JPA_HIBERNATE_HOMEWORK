@@ -1,12 +1,13 @@
 package com.jpa.homeworkjpa.service;
 
 import com.jpa.homeworkjpa.model.dto.request.ProductRequest;
+import com.jpa.homeworkjpa.model.dto.response.ListProductResponse;
 import com.jpa.homeworkjpa.model.entity.Product;
 
 import java.util.List;
 
 public interface ProductService {
-    public List<Product> findAll(Integer page, Integer size);
+    public ListProductResponse findAll(Integer page, Integer size);
     public Product save(ProductRequest productRequest);
     public Product findById(Long id);
     public Product update(ProductRequest productRequest , Long id);

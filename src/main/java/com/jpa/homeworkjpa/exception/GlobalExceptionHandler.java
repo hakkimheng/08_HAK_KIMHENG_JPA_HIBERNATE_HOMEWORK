@@ -19,15 +19,15 @@ public class GlobalExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
         problemDetail.setProperty("message", e.getMessage());
         problemDetail.setProperty("timestamp", LocalDateTime.now());
+        problemDetail.setStatus(HttpStatus.BAD_REQUEST);
         return problemDetail;
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ProblemDetail handleNotFoundException(NotFoundException e) {
         ProblemDetail errorResponse = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-        errorResponse.setProperty("message", e.getMessage());
         errorResponse.setProperty("timestamp", LocalDateTime.now());
-        errorResponse.setProperty("status", HttpStatus.NOT_FOUND);
+        errorResponse.setStatus(HttpStatus.NOT_FOUND);
         return errorResponse;
     }
 

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,19 +43,14 @@ public class ProductServiceImplementation  implements ProductService {
 
     @Override
     public Product findById(Long id) {
-        Product product = productRepository.findById(id);
-        if(product == null) {
-            throw new BadRequestException("Product with id " + id + " not found");
-        }
-        return product;
+       return Optional.ofNullable(productRepository.findById(id))
+               .orElseThrow(() -> new NotFoundException("Product with id "+ id +" found"));
     }
 
     @Override
     public Product update(ProductRequest productRequest, Long id) {
-        Product product = productRepository.findById(id);
-        if(product == null) {
-            throw new BadRequestException("Product with id " + id + " not found");
-        }
+        Product product = Optional.ofNullable(productRepository.findById(id))
+                        .orElseThrow(() -> new NotFoundException("Product with id " + id + " not found"));
         product.setName(productRequest.getName());
         product.setPrice(productRequest.getPrice());
         product.setQuantity(productRequest.getQuantity());
@@ -64,20 +60,15 @@ public class ProductServiceImplementation  implements ProductService {
 
     @Override
     public void delete(Long id) {
-        Product product = productRepository.findById(id);
-        if(product == null) {
-            throw new BadRequestException("Product with id " + id + " not found");
-        }
+        Optional.ofNullable(productRepository.findById(id))
+                        .orElseThrow(() -> new NotFoundException("Product with id " + id + " not found"));
         productRepository.deleteById(id);
     }
 
     @Override
     public List<Product> findProductLowStock(Integer quantity) {
-        List<Product> products = productRepository.findProductLowStock(quantity);
-        if(products == null) {
-            throw new NotFoundException("Product not found");
-        }
-       return productRepository.findProductLowStock(quantity);
+        return Optional.ofNullable(productRepository.findProductLowStock(quantity))
+                .orElseThrow(() -> new NotFoundException("Product with quantity " + quantity + " not found"));
     }
 
     @Override

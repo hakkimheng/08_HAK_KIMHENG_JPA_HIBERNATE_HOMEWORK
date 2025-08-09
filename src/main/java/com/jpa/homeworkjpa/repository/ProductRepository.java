@@ -68,9 +68,8 @@ public class ProductRepository {
         product.setName(product_up.getName());
         product.setPrice(product_up.getPrice());
         product.setQuantity(product_up.getQuantity());
-
         em.merge(product);
-        return product_up;
+        return product;
     }
 
 
